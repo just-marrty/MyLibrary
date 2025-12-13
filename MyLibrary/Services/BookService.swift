@@ -1,5 +1,5 @@
 //
-//  Library.swift
+//  LibraryService.swift
 //  MyLibrary
 //
 //  Created by Martin Hrbáček on 07.11.2025.
@@ -7,47 +7,47 @@
 
 import Foundation
 
-class Library {
+class LibraryService {
     
-    var allMyLibrary: [MyLibrary] = []
-    var myLibrary: [MyLibrary] = []
+    var allBooksData: [Book] = []
+    var booksData: [Book] = []
     
     init() {
-        decodeLibraryData()
+        decodeBooksData()
     }
     
-    func decodeLibraryData() {
-        if let url = Bundle.main.url(forResource: "library", withExtension: "json") {
+    func decodeBooksData() {
+        if let url = Bundle.main.url(forResource: "books", withExtension: "json") {
             do {
                 let data = try Data(contentsOf: url)
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
             
-                allMyLibrary = try decoder.decode([MyLibrary].self, from: data)
-                myLibrary = allMyLibrary
+                allBooksData = try decoder.decode([Book].self, from: data)
+                booksData = allBooksData
             } catch {
                 print("Error decoding JSON data: \(error)")
             }
         }
     }
     
-    func search(for searchTerm: String) -> [MyLibrary] {
+    func search(for searchTerm: String) -> [Book] {
         if searchTerm.isEmpty {
-            return myLibrary
+            return booksData
         } else {
-            return myLibrary.filter { library in
-                library.author
+            return booksData.filter { book in
+                book.author
                     .localizedCaseInsensitiveContains(searchTerm)
             }
         }
     }
     
     func sort(by alphabetical: Bool) {
-        myLibrary.sort { library1, library2 in
+        booksData.sort { book1, book2 in
             if alphabetical {
-                library1.author < library2.author
+                book1.author < book2.author
             } else {
-                library1.id < library2.id
+                book1.id < book2.id
             }
         }
     }
