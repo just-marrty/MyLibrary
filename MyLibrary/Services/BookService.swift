@@ -1,5 +1,5 @@
 //
-//  LibraryService.swift
+//  BookService.swift
 //  MyLibrary
 //
 //  Created by Martin Hrbáček on 07.11.2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class LibraryService {
+class BookService {
     
     var allBooksData: [Book] = []
     var booksData: [Book] = []

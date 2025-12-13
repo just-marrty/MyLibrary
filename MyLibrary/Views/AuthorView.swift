@@ -8,19 +8,20 @@
 import SwiftUI
 
 struct AuthorView: View {
-    let library: MyLibrary
+    let book: Book
     
     var body: some View {
         ScrollView {
             VStack (alignment: .leading) {
-                Text(library.author)
+                Text(book.author)
                     .font(.largeTitle)
+                    .bold()
                 
-                Text(library.title)
-                    .font(.subheadline)
+                Text(book.title)
+                    .font(.title)
                     .padding(.top)
                 
-                Text(library.description)
+                Text(book.description)
                     .padding(.top)
             }
             .padding()
@@ -29,5 +30,5 @@ struct AuthorView: View {
 }
 
 #Preview {
-    AuthorView(library: Library().myLibrary[2])
+    AuthorView(book: BookService().booksData[2])
 }

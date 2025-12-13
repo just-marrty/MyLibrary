@@ -8,49 +8,39 @@
 import SwiftUI
 
 struct ContentView: View {
-    let library = Library()
+    let bookService = BookService()
     
-    @State var searchText = ""
-    @State var alphabetical = false
-    
-    var filterLibrary: [MyLibrary] {
-        library.sort(by: alphabetical)
-        return library.search(for: searchText)
-    }
+    @State private var searchText = ""
+    @State private var alphabetical = false
     
     var body: some View {
         NavigationStack {
-            // List odkazuje na MyLibrary.swift
-            List(filterLibrary) { library in
+            List(bookService.search(for: searchText)) { book in
                 NavigationLink {
-                    AuthorView(library: library)
+                    AuthorView(book: book)
                 } label: {
-                    // VStack pro autora a národnost z json (také z MyLibrary.swift)
                     VStack(alignment: .leading) {
-                        Text(library.author)
+                        Text(book.author)
                             .font(.title2)
                         
-                        Text(library.nationality)
+                        Text(book.nationality)
                             .font(.subheadline)
                             .padding(.top, 3)
                     }
                 }
             }
-            .navigationTitle("Knihovna")
+            .navigationTitle("Library")
             .searchable(text: $searchText)
+            .animation(.default, value: searchText)
             .autocorrectionDisabled()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         withAnimation {
                             alphabetical.toggle()
+                            bookService.sort(by: alphabetical)
                         }
                     } label: {
-//                        if alphabetical {
-//                            Image(systemName: "person")
-//                        } else {
-//                            Image(systemName: "textformat")
-//                        }
                         Image(systemName: alphabetical ? "person" : "textformat")
                             .symbolEffect(.bounce, value: alphabetical)
                     }
